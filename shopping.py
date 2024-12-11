@@ -17,12 +17,11 @@ st.sidebar.title("Opcje analizy")
 age_filter = st.sidebar.slider("Wiek klienta", int(data["Age"].min()), int(data["Age"].max()), (18, 60))
 
 # Filtry kategorii dla poszczególnych wykresów
-category_filter_1 = st.sidebar.multiselect("Wybierz kategorie dla wykresu 1 (Zakupy wg kategorii)", data["Category"].unique(), data["Category"].unique())
-category_filter_2 = st.sidebar.multiselect("Wybierz kategorie dla wykresu 2 (Średnia kwota zakupów wg sezonu)", data["Category"].unique(), data["Category"].unique())
-category_filter_3 = st.sidebar.multiselect("Wybierz kategorie dla wykresu 3 (Liczba klientów wg wieku)", data["Category"].unique(), data["Category"].unique())
-category_filter_4 = st.sidebar.multiselect("Wybierz kategorie dla wykresu 4 (Średnia kwota zakupów wg wieku)", data["Category"].unique(), data["Category"].unique())
-category_filter_5 = st.sidebar.multiselect("Wybierz kategorie dla wykresu 5 (Procentowy udział kategorii w zakupach)", data["Category"].unique(), data["Category"].unique())
-category_filter_6 = st.sidebar.multiselect("Wybierz kategorie dla wykresu 6 (Średnia kwota zakupów wg dnia tygodnia)", data["Category"].unique(), data["Category"].unique())
+category_filter_1 = st.sidebar.multiselect("Zakupy wg kategorii", data["Category"].unique(), data["Category"].unique())
+category_filter_2 = st.sidebar.multiselect("Średnia kwota zakupów wg sezonu", data["Season"].unique(), data["Category"].unique())
+category_filter_3 = st.sidebar.multiselect("Liczba klientów wg wieku", data["Category"].unique(), data["Category"].unique())
+category_filter_4 = st.sidebar.multiselect("Średnia kwota zakupów wg wieku", data["Category"].unique(), data["Category"].unique())
+category_filter_5 = st.sidebar.multiselect("Procentowy udział kategorii w zakupach", data["Category"].unique(), data["Category"].unique())
 
 # Filtruj dane na podstawie wieku i kategorii dla każdego wykresu
 filtered_data_1 = data[(data["Age"] >= age_filter[0]) & 
@@ -44,10 +43,6 @@ filtered_data_4 = data[(data["Age"] >= age_filter[0]) &
 filtered_data_5 = data[(data["Age"] >= age_filter[0]) & 
                        (data["Age"] <= age_filter[1]) & 
                        (data["Category"].isin(category_filter_5))]
-
-filtered_data_6 = data[(data["Age"] >= age_filter[0]) & 
-                       (data["Age"] <= age_filter[1]) & 
-                       (data["Category"].isin(category_filter_6))]
 
 # Wyświetlanie danych
 st.write("### Filtrowane dane", filtered_data_1)
