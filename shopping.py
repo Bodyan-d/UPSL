@@ -57,7 +57,7 @@ st.pyplot(fig)
 
 # Wykres 4: Suma zakupów wg kategorii
 st.write("### Suma zakupów wg kategorii")
-category_sum = filtered_data.groupby("Category")["Purchase Amount (USD)"].sum().head(top_categories)
+category_counts = filtered_data["Category"].value_counts().head(top_categories)
 fig, ax = plt.subplots()
 category_counts.plot(kind="bar", ax=ax)
 ax.set_xlabel("Kategoria")
