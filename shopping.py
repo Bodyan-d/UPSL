@@ -32,8 +32,7 @@ filtered_data_3 = data[(data["Age"] >= age_filter[0]) &
                        (data["Age"] <= age_filter[1])]
 
 filtered_data_4 = data[(data["Age"] >= age_filter[0]) & 
-                       (data["Age"] <= age_filter[1]) & 
-                       (data["Category"].isin(category_filter_4))]
+                       (data["Age"] <= age_filter[1])]
 
 filtered_data_5 = data[(data["Age"] >= age_filter[0]) & 
                        (data["Age"] <= age_filter[1]) & 
