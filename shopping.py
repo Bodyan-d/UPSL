@@ -39,7 +39,7 @@ ax.set_xlabel("Kategoria")
 ax.set_ylabel("Liczba zakupów")
 st.pyplot(fig)
 
-# Wykres 2: Średnia kwota zakupów wg sezonu
+# Wykres 2: Średnia kwota zakupów wg sezonu (z filtrem kategorii)
 st.write("### Średnia kwota zakupów wg sezonu")
 season_mean = filtered_data.groupby("Season")["Purchase Amount (USD)"].mean()
 fig, ax = plt.subplots()
@@ -48,7 +48,7 @@ ax.set_xlabel("Sezon")
 ax.set_ylabel("Średnia kwota zakupów (USD)")
 st.pyplot(fig)
 
-# Wykres 3: Liczba klientów wg wieku
+# Wykres 3: Liczba klientów wg wieku (z filtrem kategorii)
 st.write("### Liczba klientów wg wieku")
 fig, ax = plt.subplots()
 filtered_data["Age"].hist(bins=20, ax=ax)
@@ -56,7 +56,7 @@ ax.set_xlabel("Wiek")
 ax.set_ylabel("Liczba klientów")
 st.pyplot(fig)
 
-# Wykres 4: Średnia kwota zakupów w zależności od wieku klienta
+# Wykres 4: Średnia kwota zakupów w zależności od wieku klienta (z filtrem kategorii)
 st.write("### Średnia kwota zakupów wg wieku")
 age_mean = filtered_data.groupby("Age")["Purchase Amount (USD)"].mean()
 fig, ax = plt.subplots()
@@ -72,5 +72,3 @@ fig, ax = plt.subplots()
 category_percentage.plot(kind="pie", ax=ax, autopct='%1.1f%%', startangle=90)
 ax.set_ylabel("")  # Ukryj etykietę osi Y
 st.pyplot(fig)
-
-
