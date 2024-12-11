@@ -22,9 +22,9 @@ category_filter_2 = st.sidebar.multiselect("Wybierz kategorie dla wykresu 2 (Śr
 category_filter_3 = st.sidebar.multiselect("Wybierz kategorie dla wykresu 3 (Liczba klientów wg wieku)", data["Category"].unique(), data["Category"].unique())
 category_filter_4 = st.sidebar.multiselect("Wybierz kategorie dla wykresu 4 (Średnia kwota zakupów wg wieku)", data["Category"].unique(), data["Category"].unique())
 category_filter_5 = st.sidebar.multiselect("Wybierz kategorie dla wykresu 5 (Procentowy udział kategorii w zakupach)", data["Category"].unique(), data["Category"].unique())
+category_filter_6 = st.sidebar.multiselect("Wybierz kategorie dla wykresu 6 (Średnia kwota zakupów wg dnia tygodnia)", data["Category"].unique(), data["Category"].unique())
 
-
-# Filtruj dane na podstawie wieku i kategorii
+# Filtruj dane na podstawie wieku i kategorii dla każdego wykresu
 filtered_data_1 = data[(data["Age"] >= age_filter[0]) & 
                        (data["Age"] <= age_filter[1]) & 
                        (data["Category"].isin(category_filter_1))]
@@ -45,7 +45,9 @@ filtered_data_5 = data[(data["Age"] >= age_filter[0]) &
                        (data["Age"] <= age_filter[1]) & 
                        (data["Category"].isin(category_filter_5))]
 
-
+filtered_data_6 = data[(data["Age"] >= age_filter[0]) & 
+                       (data["Age"] <= age_filter[1]) & 
+                       (data["Category"].isin(category_filter_6))]
 
 # Wyświetlanie danych
 st.write("### Filtrowane dane", filtered_data_1)
@@ -95,3 +97,15 @@ fig, ax = plt.subplots()
 category_percentage.plot(kind="pie", ax=ax, autopct='%1.1f%%', startangle=90)
 ax.set_ylabel("")  # Ukryj etykietę osi Y
 st.pyplot(fig)
+
+# Wykres 6: Średnia kwota zakupów wg dnia tygodnia
+st.write("### Średnia kwota zakupów wg dnia tygodnia")
+filtered_data_6['Day of Week'] = pd.to_datetime(filtered_data_6['Purchase Date']).dt.day_name()
+week_day_mean = filtered_data_6.groupby("Day of Week")["Purchase Amount (USD)"].mean()
+week_day_mean = week_day_mean.reindex(["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"])  # Ustawienie dni tygodnia w porządku
+fig, ax = plt.subplots()
+week_day_mean.plot(kind="bar", ax=ax)
+ax.set_xlabel("Dzień tygodnia")
+ax.set_ylabel("Średnia kwota zakupów (USD)")
+st.pyplot(fig)
+
