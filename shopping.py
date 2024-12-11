@@ -66,9 +66,9 @@ st.pyplot(fig)
 # Wykres 5: Rozkład kwot zakupów
 st.write("### Rozkład kwot zakupów")
 fig, ax = plt.subplots()
-filtered_data["Purchase Amount (USD)"].hist(bins=30, ax=ax, color="orange")
+filtered_data.boxplot(column="Purchase Amount (USD)", ax=ax, vert=False, patch_artist=True, boxprops=dict(facecolor="orange"))
 ax.set_xlabel("Kwota zakupów (USD)")
-ax.set_ylabel("Liczba zakupów")
+ax.set_ylabel("Rozkład")
 st.pyplot(fig)
 
 # Wykres 6: Średnia kwota zakupów wg wieku
