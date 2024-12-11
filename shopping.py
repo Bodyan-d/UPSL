@@ -61,7 +61,6 @@ st.pyplot(fig)
 # Wykres 3: Liczba klientów wg wieku
 st.write("### Liczba klientów wg wieku")
 fig, ax = plt.subplots()
-filtered_data_3["Age"].hist(bins=20, ax=ax)
 ax.set_xlabel("Wiek")
 ax.set_ylabel("Liczba klientów")
 st.pyplot(fig)
