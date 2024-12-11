@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # Wczytaj dane
-@st.cache_data
+@st.cache
 def load_data():
     return pd.read_csv('shopping_trends.csv')
 
@@ -55,3 +55,22 @@ filtered_data["Age"].hist(bins=20, ax=ax)
 ax.set_xlabel("Wiek")
 ax.set_ylabel("Liczba klientów")
 st.pyplot(fig)
+
+# Wykres 4: Średnia kwota zakupów w zależności od wieku klienta
+st.write("### Średnia kwota zakupów wg wieku")
+age_mean = filtered_data.groupby("Age")["Purchase Amount (USD)"].mean()
+fig, ax = plt.subplots()
+age_mean.plot(kind="line", ax=ax)
+ax.set_xlabel("Wiek")
+ax.set_ylabel("Średnia kwota zakupów (USD)")
+st.pyplot(fig)
+
+# Wykres 5: Procentowy udział każdej kategorii w ogólnej liczbie zakupów
+st.write("### Procentowy udział kategorii w zakupach")
+category_percentage = (filtered_data["Category"].value_counts() / len(filtered_data)) * 100
+fig, ax = plt.subplots()
+category_percentage.plot(kind="pie", ax=ax, autopct='%1.1f%%', startangle=90)
+ax.set_ylabel("")  # Ukryj etykietę osi Y
+st.pyplot(fig)
+
+
