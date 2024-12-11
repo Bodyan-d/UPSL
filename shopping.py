@@ -53,3 +53,31 @@ filtered_data["Age"].hist(bins=20, ax=ax)
 ax.set_xlabel("Wiek")
 ax.set_ylabel("Liczba klientów")
 st.pyplot(fig)
+
+# Additional filter by purchase amount
+purchase_filter = st.sidebar.slider(
+    "Filter by Purchase Amount (USD)", 
+    int(data["Purchase Amount (USD)"].min()), 
+    int(data["Purchase Amount (USD)"].max()), 
+    (10, 500)
+)
+
+filtered_data = filtered_data[
+    (filtered_data["Purchase Amount (USD)"] >= purchase_filter[0]) & 
+    (filtered_data["Purchase Amount (USD)"] <= purchase_filter[1])
+]
+
+# Map visualization
+st.write("### Customers on the Map")
+if "Latitude" in filtered_data.columns and "Longitude" in filtered_data.columns:
+    st.map(filtered_data[["Latitude", "Longitude"]])
+else:
+    st.write("No geographic data available for mapping.")
+
+# Additional histogram
+st.write("### Histogram of Purchase Amounts")
+fig, ax = plt.subplots()
+filtered_data["Purchase Amount (USD)"].hist(bins=30, ax=ax, color='orange')
+ax.set_xlabel("Purchase Amount (USD)")
+ax.set_ylabel("Frequency")
+st.pyplot(fig)
