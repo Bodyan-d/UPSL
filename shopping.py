@@ -68,7 +68,6 @@ st.pyplot(fig)
 # Wykres 4: Średnia kwota zakupów w zależności od wieku klienta
 st.write("### Średnia kwota zakupów wg wieku")
 fig, ax = plt.subplots()
-age_mean.plot(kind="line", ax=ax)
 ax.set_xlabel("Wiek")
 ax.set_ylabel("Średnia kwota zakupów (USD)")
 st.pyplot(fig)
