@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # Wczytaj dane
-@st.cache
+@st.cache_data
 def load_data():
     return pd.read_csv('shopping_trends.csv')
 
@@ -54,30 +54,17 @@ ax.set_xlabel("Wiek")
 ax.set_ylabel("Liczba klientów")
 st.pyplot(fig)
 
-# Additional filter by purchase amount
-purchase_filter = st.sidebar.slider(
-    "Filter by Purchase Amount (USD)", 
-    int(data["Purchase Amount (USD)"].min()), 
-    int(data["Purchase Amount (USD)"].max()), 
-    (10, 500)
-)
+if st.checkbox('Show raw data'):
+    st.subheader('Raw data')
+    st.write(data)
 
-filtered_data = filtered_data[
-    (filtered_data["Purchase Amount (USD)"] >= purchase_filter[0]) & 
-    (filtered_data["Purchase Amount (USD)"] <= purchase_filter[1])
-]
+st.subheader('Number of pickups by hour')
+hist_values = np.histogram(data[DATE_COLUMN].dt.hour, bins=24, range=(0,24))[0]
+st.bar_chart(hist_values)
 
-# Map visualization
-st.write("### Customers on the Map")
-if "Latitude" in filtered_data.columns and "Longitude" in filtered_data.columns:
-    st.map(filtered_data[["Latitude", "Longitude"]])
-else:
-    st.write("No geographic data available for mapping.")
+# Some number in the range 0-23
+hour_to_filter = st.slider('hour', 0, 23, 17)
+filtered_data = data[data[DATE_COLUMN].dt.hour == hour_to_filter]
 
-# Additional histogram
-st.write("### Histogram of Purchase Amounts")
-fig, ax = plt.subplots()
-filtered_data["Purchase Amount (USD)"].hist(bins=30, ax=ax, color='orange')
-ax.set_xlabel("Purchase Amount (USD)")
-ax.set_ylabel("Frequency")
-st.pyplot(fig)
+st.subheader('Map of all pickups at %s:00' % hour_to_filter)
+st.map(filtered_data)
