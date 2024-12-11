@@ -94,10 +94,14 @@ ax.set_ylabel("Średnia kwota zakupów (USD)")
 st.pyplot(fig)
 
 # Wykres 8: Liczba zakupów wg regionu
-st.write("### Liczba zakupów wg regionu")
-region_counts = filtered_data["Region"].value_counts()
-fig, ax = plt.subplots()
-region_counts.plot(kind="bar", ax=ax, color="cyan")
-ax.set_xlabel("Region")
-ax.set_ylabel("Liczba zakupów")
-st.pyplot(fig)
+if "Region" in filtered_data.columns:
+    st.write("### Liczba zakupów wg regionu")
+    region_counts = filtered_data["Region"].value_counts()
+    fig, ax = plt.subplots()
+    region_counts.plot(kind="bar", ax=ax, color="cyan")
+    ax.set_xlabel("Region")
+    ax.set_ylabel("Liczba zakupów")
+    st.pyplot(fig)
+else:
+    st.write("### Liczba zakupów wg regionu")
+    st.write("Brak danych o regionach w załadowanym zbiorze danych.")
