@@ -19,7 +19,6 @@ age_filter = st.sidebar.slider("Wiek klienta", int(data["Age"].min()), int(data[
 # Filtry kategorii dla poszczególnych wykresów
 category_filter_1 = st.sidebar.multiselect("Zakupy wg kategorii", data["Category"].unique(), data["Category"].unique())
 category_filter_2 = st.sidebar.multiselect("Średnia kwota zakupów wg sezonu", data["Season"].unique(), data["Season"].unique())
-category_filter_3 = st.sidebar.multiselect("Liczba klientów wg wieku", data["Category"].unique(), data["Category"].unique())
 category_filter_4 = st.sidebar.multiselect("rednia kwota zakupów wg wieku", data["Category"].unique(), data["Category"].unique())
 category_filter_5 = st.sidebar.multiselect("Procentowy udział kategorii w zakupach", data["Category"].unique(), data["Category"].unique())
 category_filter_6 = st.sidebar.multiselect("Średnia kwota zakupów wg dnia tygodnia", data["Category"].unique(), data["Category"].unique())
@@ -31,7 +30,8 @@ filtered_data_1 = data[(data["Age"] >= age_filter[0]) &
 
 filtered_data_2 = data[data["Season"].isin(category_filter_2)]
 
-
+filtered_data_3 = data[(data["Age"] >= age_filter[0]) & 
+                       (data["Age"] <= age_filter[1])]
 
 filtered_data_4 = data[(data["Age"] >= age_filter[0]) & 
                        (data["Age"] <= age_filter[1]) & 
