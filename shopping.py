@@ -16,6 +16,7 @@ st.sidebar.title("Opcje analizy")
 # Filtry
 age_filter = st.sidebar.slider("Wiek klienta", int(data["Age"].min()), int(data["Age"].max()), (18, 60))
 category_filter = st.sidebar.multiselect("Kategorie produktów", data["Category"].unique(), data["Category"].unique())
+top_categories = st.sidebar.slider("Liczba kategorii do wyświetlenia", 1, len(data["Category"].unique()), 5)
 
 # Filtruj dane
 filtered_data = data[(data["Age"] >= age_filter[0]) & 
@@ -30,7 +31,7 @@ st.write("## Analiza wizualna")
 
 # Wykres 1: Zakupy wg kategorii
 st.write("### Liczba zakupów wg kategorii")
-category_counts = filtered_data["Category"].value_counts()
+category_counts = filtered_data["Category"].value_counts().head(top_categories)
 fig, ax = plt.subplots()
 category_counts.plot(kind="bar", ax=ax)
 ax.set_xlabel("Kategoria")
@@ -56,19 +57,20 @@ st.pyplot(fig)
 
 # Wykres 4: Suma zakupów wg kategorii
 st.write("### Suma zakupów wg kategorii")
-category_sum = filtered_data.groupby("Category")["Purchase Amount (USD)"].sum()
+category_sum = filtered_data.groupby("Category")["Purchase Amount (USD)"].sum().head(top_categories)
 fig, ax = plt.subplots()
 category_sum.plot(kind="bar", ax=ax, color="green")
 ax.set_xlabel("Kategoria")
 ax.set_ylabel("Suma zakupów (USD)")
 st.pyplot(fig)
 
-# Wykres 5: Rozkład kwot zakupów
-st.write("### Rozkład kwot zakupów")
+# Wykres 5: Kwoty zakupów w podziale na kategorie
+st.write("### Kwoty zakupów w podziale na kategorie")
 fig, ax = plt.subplots()
-filtered_data.boxplot(column="Purchase Amount (USD)", ax=ax, vert=False, patch_artist=True, boxprops=dict(facecolor="orange"))
-ax.set_xlabel("Kwota zakupów (USD)")
-ax.set_ylabel("Rozkład")
+filtered_data.boxplot(column="Purchase Amount (USD)", by="Category", ax=ax, patch_artist=True, boxprops=dict(facecolor="orange"))
+ax.set_xlabel("Kategoria")
+ax.set_ylabel("Kwota zakupów (USD)")
+plt.suptitle("")  # Usuwa domyślny tytuł generowany przez pandas
 st.pyplot(fig)
 
 # Wykres 6: Średnia kwota zakupów wg wieku
