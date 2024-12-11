@@ -97,14 +97,3 @@ fig, ax = plt.subplots()
 category_percentage.plot(kind="pie", ax=ax, autopct='%1.1f%%', startangle=90)
 ax.set_ylabel("")  # Ukryj etykietę osi Y
 st.pyplot(fig)
-
-# Wykres 6: Średnia kwota zakupów wg dnia tygodnia
-st.write("### Średnia kwota zakupów wg dnia tygodnia")
-filtered_data_6['Day of Week'] = pd.to_datetime(filtered_data_6['Purchase Date']).dt.day_name()
-week_day_mean = filtered_data_6.groupby("Day of Week")["Purchase Amount (USD)"].mean()
-week_day_mean = week_day_mean.reindex(["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"])  # Ustawienie dni tygodnia w porządku
-fig, ax = plt.subplots()
-week_day_mean.plot(kind="bar", ax=ax)
-ax.set_xlabel("Dzień tygodnia")
-ax.set_ylabel("Średnia kwota zakupów (USD)")
-st.pyplot(fig)
