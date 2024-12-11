@@ -63,20 +63,7 @@ ax.set_xlabel("Kategoria")
 ax.set_ylabel("Suma zakupów (USD)")
 st.pyplot(fig)
 
-# Wykres 5: Zakupy wg dni tygodnia
-if "Day of Week" in filtered_data.columns:
-    st.write("### Zakupy wg dni tygodnia")
-    weekday_counts = filtered_data["Day of Week"].value_counts()
-    fig, ax = plt.subplots()
-    weekday_counts.sort_index().plot(kind="bar", ax=ax, color="purple")
-    ax.set_xlabel("Dzień tygodnia")
-    ax.set_ylabel("Liczba zakupów")
-    st.pyplot(fig)
-else:
-    st.write("### Zakupy wg dni tygodnia")
-    st.write("Brak danych o dniach tygodnia w załadowanym zbiorze danych.")
-
-# Wykres 6: Rozkład kwot zakupów
+# Wykres 5: Rozkład kwot zakupów
 st.write("### Rozkład kwot zakupów")
 fig, ax = plt.subplots()
 filtered_data["Purchase Amount (USD)"].hist(bins=30, ax=ax, color="orange")
@@ -84,7 +71,7 @@ ax.set_xlabel("Kwota zakupów (USD)")
 ax.set_ylabel("Liczba zakupów")
 st.pyplot(fig)
 
-# Wykres 7: Średnia kwota zakupów wg wieku
+# Wykres 6: Średnia kwota zakupów wg wieku
 st.write("### Średnia kwota zakupów wg wieku")
 age_mean = filtered_data.groupby("Age")["Purchase Amount (USD)"].mean()
 fig, ax = plt.subplots()
@@ -92,16 +79,3 @@ age_mean.plot(ax=ax, color="red")
 ax.set_xlabel("Wiek")
 ax.set_ylabel("Średnia kwota zakupów (USD)")
 st.pyplot(fig)
-
-# Wykres 8: Liczba zakupów wg regionu
-if "Region" in filtered_data.columns:
-    st.write("### Liczba zakupów wg regionu")
-    region_counts = filtered_data["Region"].value_counts()
-    fig, ax = plt.subplots()
-    region_counts.plot(kind="bar", ax=ax, color="cyan")
-    ax.set_xlabel("Region")
-    ax.set_ylabel("Liczba zakupów")
-    st.pyplot(fig)
-else:
-    st.write("### Liczba zakupów wg regionu")
-    st.write("Brak danych o regionach w załadowanym zbiorze danych.")
