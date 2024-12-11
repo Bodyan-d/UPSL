@@ -1,14 +1,12 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
-import numpy as np
 
 # Wczytaj dane
-@st.cache_data
+@st.cache
 def load_data():
     return pd.read_csv('shopping_trends.csv')
-    
-DATE_COLUMN = 'date/time'
+
 data = load_data()
 
 # Ustawienia strony
@@ -56,13 +54,48 @@ ax.set_xlabel("Wiek")
 ax.set_ylabel("Liczba klientów")
 st.pyplot(fig)
 
-st.write('Number of pickups by hour')
-hist_values = np.histogram(data[DATE_COLUMN].dt.hour, bins=24, range=(0,24))[0]
-st.bar_chart(hist_values)
+# Wykres 4: Suma zakupów wg kategorii
+st.write("### Suma zakupów wg kategorii")
+category_sum = filtered_data.groupby("Category")["Purchase Amount (USD)"].sum()
+fig, ax = plt.subplots()
+category_sum.plot(kind="bar", ax=ax, color="green")
+ax.set_xlabel("Kategoria")
+ax.set_ylabel("Suma zakupów (USD)")
+st.pyplot(fig)
 
-# Some number in the range 0-23
-hour_to_filter = st.slider('hour', 0, 23, 17)
-filtered_data = data[data[DATE_COLUMN].dt.hour == hour_to_filter]
+# Wykres 5: Zakupy wg dni tygodnia
+st.write("### Zakupy wg dni tygodnia")
+weekday_counts = filtered_data["Day of Week"].value_counts()
+fig, ax = plt.subplots()
+weekday_counts.sort_index().plot(kind="bar", ax=ax, color="purple")
+ax.set_xlabel("Dzień tygodnia")
+ax.set_ylabel("Liczba zakupów")
+st.pyplot(fig)
 
-st.subheader('Map of all pickups at %s:00' % hour_to_filter)
-st.map(filtered_data)
+# Wykres 6: Rozkład kwot zakupów
+st.write("### Rozkład kwot zakupów")
+fig, ax = plt.subplots()
+filtered_data["Purchase Amount (USD)"].hist(bins=30, ax=ax, color="orange")
+ax.set_xlabel("Kwota zakupów (USD)")
+ax.set_ylabel("Liczba zakupów")
+st.pyplot(fig)
+
+# Wykres 7: Średnia kwota zakupów wg wieku
+st.write("### Średnia kwota zakupów wg wieku")
+age_mean = filtered_data.groupby("Age")["Purchase Amount (USD)"].mean()
+fig, ax = plt.subplots()
+age_mean.plot(ax=ax, color="red")
+ax.set_xlabel("Wiek")
+ax.set_ylabel("Średnia kwota zakupów (USD)")
+st.pyplot(fig)
+
+# Wykres 8: Liczba zakupów wg regionu
+st.write("### Liczba zakupów wg regionu")
+region_counts = filtered_data["Region"].value_counts()
+fig, ax = plt.subplots()
+region_counts.plot(kind="bar", ax=ax, color="cyan")
+ax.set_xlabel("Region")
+ax.set_ylabel("Liczba zakupów")
+st.pyplot(fig)
+
+
