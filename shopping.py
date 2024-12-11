@@ -57,20 +57,19 @@ st.pyplot(fig)
 
 # Wykres 4: Suma zakupów wg kategorii
 st.write("### Suma zakupów wg kategorii")
-category_counts = filtered_data["Category"].value_counts().head(top_categories)
+category_sum = filtered_data.groupby("Category")["Purchase Amount (USD)"].sum().head(top_categories)
 fig, ax = plt.subplots()
-category_counts.plot(kind="bar", ax=ax)
+category_sum.plot(kind="bar", ax=ax, color="green")
 ax.set_xlabel("Kategoria")
 ax.set_ylabel("Suma zakupów (USD)")
 st.pyplot(fig)
 
-# Wykres 5: Kwoty zakupów w podziale na kategorie
-st.write("### Kwoty zakupów w podziale na kategorie")
+# Wykres 5: Rozkład liczby zakupów w podziale na sezony
+st.write("### Rozkład liczby zakupów w podziale na sezony")
 fig, ax = plt.subplots()
-filtered_data.boxplot(column="Purchase Amount (USD)", by="Category", ax=ax, patch_artist=True, boxprops=dict(facecolor="orange"))
-ax.set_xlabel("Kategoria")
-ax.set_ylabel("Kwota zakupów (USD)")
-plt.suptitle("")  # Usuwa domyślny tytuł generowany przez pandas
+filtered_data.groupby("Season")["Purchase Amount (USD)"].count().plot(kind="pie", ax=ax, autopct='%1.1f%%', startangle=90)
+ax.set_ylabel("")  # Usuwa etykietę osi Y
+ax.set_xlabel("Sezon")
 st.pyplot(fig)
 
 # Wykres 6: Średnia kwota zakupów wg wieku
@@ -81,3 +80,18 @@ age_mean.plot(ax=ax, color="red")
 ax.set_xlabel("Wiek")
 ax.set_ylabel("Średnia kwota zakupów (USD)")
 st.pyplot(fig)
+
+# Wykres 7: Liczba zakupów wg regionu
+if "Region" in filtered_data.columns:
+    st.write("### Liczba zakupów wg regionu")
+    region_counts = filtered_data["Region"].value_counts()
+    fig, ax = plt.subplots()
+    region_counts.plot(kind="bar", ax=ax, color="cyan")
+    ax.set_xlabel("Region")
+    ax.set_ylabel("Liczba zakupów")
+    st.pyplot(fig)
+else:
+    st.write("### Liczba zakupów wg regionu")
+    st.write("Brak danych o regionach w załadowanym zbiorze danych.")
+
+
