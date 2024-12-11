@@ -64,13 +64,17 @@ ax.set_ylabel("Suma zakupów (USD)")
 st.pyplot(fig)
 
 # Wykres 5: Zakupy wg dni tygodnia
-st.write("### Zakupy wg dni tygodnia")
-weekday_counts = filtered_data["Day of Week"].value_counts()
-fig, ax = plt.subplots()
-weekday_counts.sort_index().plot(kind="bar", ax=ax, color="purple")
-ax.set_xlabel("Dzień tygodnia")
-ax.set_ylabel("Liczba zakupów")
-st.pyplot(fig)
+if "Day of Week" in filtered_data.columns:
+    st.write("### Zakupy wg dni tygodnia")
+    weekday_counts = filtered_data["Day of Week"].value_counts()
+    fig, ax = plt.subplots()
+    weekday_counts.sort_index().plot(kind="bar", ax=ax, color="purple")
+    ax.set_xlabel("Dzień tygodnia")
+    ax.set_ylabel("Liczba zakupów")
+    st.pyplot(fig)
+else:
+    st.write("### Zakupy wg dni tygodnia")
+    st.write("Brak danych o dniach tygodnia w załadowanym zbiorze danych.")
 
 # Wykres 6: Rozkład kwot zakupów
 st.write("### Rozkład kwot zakupów")
@@ -97,5 +101,3 @@ region_counts.plot(kind="bar", ax=ax, color="cyan")
 ax.set_xlabel("Region")
 ax.set_ylabel("Liczba zakupów")
 st.pyplot(fig)
-
-
