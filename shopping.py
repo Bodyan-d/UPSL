@@ -18,21 +18,36 @@ age_filter = st.sidebar.slider("Wiek klienta", int(data["Age"].min()), int(data[
 
 # Filtry kategorii dla poszczególnych wykresów
 category_filter_1 = st.sidebar.multiselect("Zakupy wg kategorii", data["Category"].unique(), data["Category"].unique())
-category_filter_2 = st.sidebar.multiselect("Średnia kwota zakupów wg sezonu", data["Season"].unique(), data["Season"].unique())
+category_filter_2 = st.sidebar.multiselect("Średnia kwota zakupów wg sezonu", data["Season"].unique(), data["Category"].unique())
+category_filter_3 = st.sidebar.multiselect("Liczba klientów wg wieku", data["Category"].unique(), data["Category"].unique())
+category_filter_4 = st.sidebar.multiselect("Średnia kwota zakupów wg wieku", data["Category"].unique(), data["Category"].unique())
 category_filter_5 = st.sidebar.multiselect("Procentowy udział kategorii w zakupach", data["Category"].unique(), data["Category"].unique())
+category_filter_6 = st.sidebar.multiselect("Średnia kwota zakupów wg dnia tygodnia", data["Category"].unique(), data["Category"].unique())
 
-# Filtruj dane na podstawie wieku i kategorii dla każdego wykresu
+# Filtruj dane na podstawie wieku i kategorii
 filtered_data_1 = data[(data["Age"] >= age_filter[0]) & 
                        (data["Age"] <= age_filter[1]) & 
                        (data["Category"].isin(category_filter_1))]
 
 filtered_data_2 = data[(data["Age"] >= age_filter[0]) & 
                        (data["Age"] <= age_filter[1]) & 
-                       (data["Season"].isin(category_filter_2))]
+                       (data["Category"].isin(category_filter_2))]
+
+filtered_data_3 = data[(data["Age"] >= age_filter[0]) & 
+                       (data["Age"] <= age_filter[1]) & 
+                       (data["Category"].isin(category_filter_3))]
+
+filtered_data_4 = data[(data["Age"] >= age_filter[0]) & 
+                       (data["Age"] <= age_filter[1]) & 
+                       (data["Category"].isin(category_filter_4))]
 
 filtered_data_5 = data[(data["Age"] >= age_filter[0]) & 
                        (data["Age"] <= age_filter[1]) & 
                        (data["Category"].isin(category_filter_5))]
+
+filtered_data_6 = data[(data["Age"] >= age_filter[0]) & 
+                       (data["Age"] <= age_filter[1]) & 
+                       (data["Category"].isin(category_filter_6))]
 
 # Wyświetlanie danych
 st.write("### Filtrowane dane", filtered_data_1)
@@ -81,4 +96,15 @@ category_percentage = (filtered_data_5["Category"].value_counts() / len(filtered
 fig, ax = plt.subplots()
 category_percentage.plot(kind="pie", ax=ax, autopct='%1.1f%%', startangle=90)
 ax.set_ylabel("")  # Ukryj etykietę osi Y
+st.pyplot(fig)
+
+# Wykres 6: Średnia kwota zakupów wg dnia tygodnia
+st.write("### Średnia kwota zakupów wg dnia tygodnia")
+filtered_data_6['Day of Week'] = pd.to_datetime(filtered_data_6['Purchase Date']).dt.day_name()
+week_day_mean = filtered_data_6.groupby("Day of Week")["Purchase Amount (USD)"].mean()
+week_day_mean = week_day_mean.reindex(["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"])  # Ustawienie dni tygodnia w porządku
+fig, ax = plt.subplots()
+week_day_mean.plot(kind="bar", ax=ax)
+ax.set_xlabel("Dzień tygodnia")
+ax.set_ylabel("Średnia kwota zakupów (USD)")
 st.pyplot(fig)
