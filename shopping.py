@@ -38,10 +38,6 @@ filtered_data_5 = data[(data["Age"] >= age_filter[0]) &
                        (data["Age"] <= age_filter[1]) & 
                        (data["Category"].isin(category_filter_5))]
 
-filtered_data_6 = data[(data["Age"] >= age_filter[0]) & 
-                       (data["Age"] <= age_filter[1]) & 
-                       (data["Category"].isin(category_filter_6))]
-
 # Wyświetlanie danych
 st.write("### Filtrowane dane", filtered_data_1)
 
